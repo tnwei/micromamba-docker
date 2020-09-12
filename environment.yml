@@ -1,0 +1,17 @@
+name: testenv
+channels:
+      - conda-forge
+      - defaults
+dependencies:
+      - statsmodels
+      - scikit-learn
+      - tensorflow==2.2
+      - requests
+      - beautifulsoup4
+      - graphviz
+      - tqdm
+      - matplotlib
+      - pandas
+      - numpy
+      - seaborn
+prefix: /home/tnwei/miniconda3/envs/testenv
