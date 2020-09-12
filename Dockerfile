@@ -4,6 +4,7 @@
 # Using Ubuntu as base image
 FROM ubuntu:18.04
 
+
 # Change shell from sh to bash 
 SHELL ["/bin/bash", "-c"]
 
@@ -26,8 +27,17 @@ ENV MAMBA_EXE=$MAMBA_EXE
 # Note: Path of prefix needs to be absolute as per Jul 25, 2020 from
 # https://github.com/TheSnakePit/mamba/issues/386
 # Note: Channels need to be explicitly specified
-RUN micromamba create -y -p /alice/ pandas numpy seaborn -c defaults -y
+# RUN micromamba create -y -p /alice/ pandas numpy seaborn -c defaults -y
 
 # Example: Making envs for project `bob`
 # Different channels require different lines for installation
-RUN micromamba create -y -p /bob/ statsmodels scikit-learn tensorflow==2.2 requests beautifulsoup4 graphviz matplotlib pandas numpy seaborn -c conda-forge defaults
+# RUN micromamba create -y -p /bob/ statsmodels scikit-learn tensorflow==2.2 requests beautifulsoup4 graphviz matplotlib pandas numpy seaborn -c conda-forge defaults
+
+# Note to self: ARGs must come after FROM
+ARG ENVFILE
+
+# Make a new env from env file (output of "conda env export --from-history")
+COPY parseenv parseenv
+COPY $ENVFILE $ENVFILE
+RUN echo $ENVFILE
+RUN echo $(./parseenv --fname $ENVFILE --options "-y") && $(./parseenv --fname $ENVFILE --options "-y")
